@@ -1,0 +1,29 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      TZ: 'Asia/Tokyo'
+  back:
+    build: ./back
+    volumes:
+      - ./back:/back
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  front:
+    build: ./front
+    volumes:
+      - ./front:/front
+    ports:
+      - '8080:3000'
+    tty: true
+    stdin_open: true
+    command: npm run dev
+volumes:
+  database:
