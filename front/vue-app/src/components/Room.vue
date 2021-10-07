@@ -8,7 +8,7 @@
           
           color="grey lighten-5"
         >
-          <v-card-title>Chat Sample</v-card-title>
+          <v-card-title>{{room.name}}</v-card-title>
           <v-divider></v-divider>
           <v-card-text
             ><v-row>
@@ -83,6 +83,7 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: 'Room',
   props: {
@@ -92,14 +93,21 @@ export default {
     return {
       name: "名無し",
       message: "おはようございます。",
-
+      room: [],
       // Vars
       connection: null,
       messages: [],
       ws_key: null,
       avatar_color: "",
     }
-  }
+  },
+  mounted () {
+        axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}`).then((response) => {
+          this.room = response.data
+          }).catch(() => {
+            alert("エラー");
+          });
+      },
 }
 </script>
 

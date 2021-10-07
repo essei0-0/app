@@ -1,21 +1,14 @@
 <template>  
   <v-container>
     <v-row>
-      <template v-for="n in 4">
+      <template>
         <v-col
-          :key="n"
-          class="mt-2"
-          cols="12"
-        >
-          <strong>Category {{ n }}</strong>
-        </v-col>
-        <v-col
-        v-for="j in 6"
-        :key="`${n}${j}`"
+        v-for="room in rooms"
+        :key="`${room.id}`"
         cols="6"
         md="2"
         >
-        <router-link to="/room/id">
+        <router-link :to="{name:'Room', params:{id:room.id}}">
           <v-sheet height="150"></v-sheet>
         </router-link>
         </v-col>
@@ -24,7 +17,19 @@
   </v-container>
 </template> 
 <script>
+  import axios from "axios"
   export default {
-
+    data (){
+      return {
+        rooms: []
+      }
+    },
+    mounted () {
+        axios.get('http://localhost:3000/api/v1/rooms').then((response) => {
+          this.rooms = response.data
+          }).catch(() => {
+            alert("エラー");
+          });
+      },
   }
 </script>
