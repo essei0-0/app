@@ -18,7 +18,7 @@
                   style="height: 450px"
                   class="overflow-y-auto"
                 >
-                  <v-row v-for="(msg, i) in messages" :key="i" dense>
+                  <v-row v-for="(msg, i) in comments" :key="i" dense>
                     <v-col v-if="msg.ws_key != ws_key">
                       <div class="balloon_l">
                         <div class="face_icon">
@@ -29,7 +29,7 @@
                           </v-avatar>
                         </div>
                         <p class="says">
-                          {{ msg.message }}
+                          {{ msg.content }}
                         </p>
                       </div>
                     </v-col>
@@ -43,7 +43,7 @@
                           </v-avatar>
                         </div>
                         <p class="says">
-                          {{ msg.message }}
+                          {{ msg.content }}
                         </p>
                       </div>
                     </v-col>
@@ -96,16 +96,26 @@ export default {
       room: [],
       // Vars
       connection: null,
-      messages: [],
+      comments: [],
       ws_key: null,
       avatar_color: "",
     }
+  },
+  methods: {
+    send_onClick: function(){
+      // コメント送信機能
+    },
   },
   mounted () {
         axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}`).then((response) => {
           this.room = response.data
           }).catch(() => {
-            alert("エラー");
+            alert("roomエラー");
+          });
+        axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}/comments`).then((response) => {
+          this.comments = response.data
+          }).catch(() => {
+            alert("commentsエラー");
           });
       },
 }
