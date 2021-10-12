@@ -6,6 +6,8 @@ Rails.application.routes.draw do
           get :comments
         end
       end
+
+      resources :comments,only: [:create]
     end
   end
 

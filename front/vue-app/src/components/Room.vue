@@ -103,11 +103,11 @@ export default {
     }
   },
   methods: {
-    speak() {
-      console.log(this.comment)
-      this.commentChannel.perform('speak', { 
-      content: this.comment, 
-      });
+    speak: function(){
+      axios.post("http://localhost:3000/api/v1/comments", {comment:{content: this.comment, room_id: this.$route.params.id}}).then((response) => {
+        }).catch(() => {
+          alert("roomエラー");
+        });
     },
   },
 
