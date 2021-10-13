@@ -6,10 +6,13 @@ Rails.application.routes.draw do
           get :comments
         end
       end
+
+      resources :comments,only: [:create]
     end
   end
 
   # rails_admin設定
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  #action_cable設定
+  mount ActionCable.server => '/cable'
 end

@@ -18,32 +18,32 @@
                   style="height: 450px"
                   class="overflow-y-auto"
                 >
-                  <v-row v-for="(msg, i) in comments" :key="i" dense>
-                    <v-col v-if="msg.ws_key != ws_key">
+                  <v-row v-for="(comment, i) in comments" :key="i" dense>
+                    <v-col v-if="comment.ws_key != ws_key">
                       <div class="balloon_l">
                         <div class="face_icon">
-                          <v-avatar :color="msg.avatar_color">
+                          <v-avatar :color="comment.avatar_color">
                             <span class="white--text">
-                              {{ msg.name }}
+                              {{ comment.name }}
                             </span>
                           </v-avatar>
                         </div>
                         <p class="says">
-                          {{ msg.content }}
+                          {{ comment.content }}
                         </p>
                       </div>
                     </v-col>
                     <v-col v-else>
                       <div class="balloon_r">
                         <div class="face_icon">
-                          <v-avatar :color="msg.avatar_color">
+                          <v-avatar :color="comment.avatar_color">
                             <span class="white--text">
-                              {{ msg.name }}
+                              {{ comment.name }}
                             </span>
                           </v-avatar>
                         </div>
                         <p class="says">
-                          {{ msg.content }}
+                          {{ comment.content }}
                         </p>
                       </div>
                     </v-col>
@@ -66,13 +66,13 @@
                 <v-text-field
                   autofocus
                   label="メッセージ ※Enterでも送信できるよ"
-                  v-model="message"
+                  v-model="comment"
                   clearable
-                  @keyup.enter="send_onClick"
+                  @keyup.enter="speak"
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-btn class="info" small @click="send_onClick">
+            <v-btn class="info" small @click="speak">
               <v-icon>mdi-play</v-icon>送信
             </v-btn>
           </v-card-text>
@@ -92,33 +92,49 @@ export default {
   data () {
     return {
       name: "名無し",
-      message: "おはようございます。",
+      comment: "おはようございます。",
       room: [],
       // Vars
       connection: null,
       comments: [],
       ws_key: null,
       avatar_color: "",
+      commentChannel: null,
     }
   },
   methods: {
-    send_onClick: function(){
-      // コメント送信機能
+    speak: function(){
+      axios.post("http://localhost:3000/api/v1/comments", {comment:{content: this.comment, room_id: this.$route.params.id}}).then((response) => {
+        }).catch(() => {
+          alert("エラー");
+        });
     },
   },
+
   mounted () {
-        axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}`).then((response) => {
-          this.room = response.data
-          }).catch(() => {
-            alert("roomエラー");
-          });
-        axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}/comments`).then((response) => {
-          this.comments = response.data
-          }).catch(() => {
-            alert("commentsエラー");
-          });
-      },
+      axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}`).then((response) => {
+        this.room = response.data
+        }).catch(() => {
+          alert("roomエラー");
+        });
+      axios.get(`http://localhost:3000/api/v1/rooms/${this.$route.params.id}/comments`).then((response) => {
+        this.comments = response.data
+        }).catch(() => {
+          alert("commentsエラー");
+        });
+  },
+
+  created () {
+      this.commentChannel = this.$cable.subscriptions.create("CommentChannel",{
+        received: (data) => {
+          console.log(data)
+          this.comments.push(data)
+          console.log("スクロール移動する")
+        },
+      });
+  },
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
