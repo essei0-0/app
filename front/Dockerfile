@@ -14,3 +14,7 @@ ENV HOST 0.0.0.0
 #コンテナの8080開けてます。
 #ここで設定してるわけではない。(ただのドキュメント)
 EXPOSE 8080
+
+WORKDIR /front/vue-app
+
+CMD ["npm", "run", "dev"]
