@@ -106,7 +106,7 @@ export default {
     speak: function(){
       axios.post("http://localhost:3000/api/v1/comments", {comment:{content: this.comment, room_id: this.$route.params.id}}).then((response) => {
         }).catch(() => {
-          alert("roomエラー");
+          alert("エラー");
         });
     },
   },
@@ -129,6 +129,7 @@ export default {
         received: (data) => {
           console.log(data)
           this.comments.push(data)
+          console.log("スクロール移動する")
         },
       });
   },

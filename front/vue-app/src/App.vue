@@ -1,15 +1,5 @@
 <template>
   <v-app id="inspire">
-    <v-system-bar app>
-      <v-spacer></v-spacer>
-
-      <v-icon>mdi-square</v-icon>
-
-      <v-icon>mdi-circle</v-icon>
-
-      <v-icon>mdi-triangle</v-icon>
-    </v-system-bar>
-
     <v-app-bar app>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title><router-link to="/">Commentier</router-link></v-toolbar-title>
@@ -23,10 +13,10 @@
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="text-h6">
-            Application
+            Commentier
           </v-list-item-title>
           <v-list-item-subtitle>
-            subtext
+            menu
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -64,9 +54,9 @@
       return {
         drawer: null,
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-          { title: 'Photos', icon: 'mdi-image' },
-          { title: 'About', icon: 'mdi-help-box' },
+          { title: '人気', icon: 'mdi-view-dashboard' },
+          { title: '予定', icon: 'mdi-image' },
+          { title: 'アーカイブ', icon: 'mdi-help-box' },
         ],
       }
     },
