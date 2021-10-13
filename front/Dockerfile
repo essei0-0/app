@@ -1,6 +1,6 @@
 FROM node:12.4.0-alpine
 
-WORKDIR /front
+WORKDIR /front/vue-app
 
 RUN apk update
 RUN apk add git
@@ -14,7 +14,5 @@ ENV HOST 0.0.0.0
 #コンテナの8080開けてます。
 #ここで設定してるわけではない。(ただのドキュメント)
 EXPOSE 8080
-
-WORKDIR /front/vue-app
 
 CMD ["npm", "run", "dev"]
