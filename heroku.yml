@@ -17,3 +17,5 @@ build:
 #   image: worker
 run:
   web: npm run dev
+  config:
+    WORKDIR: vue-app
