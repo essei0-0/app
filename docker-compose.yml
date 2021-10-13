@@ -27,6 +27,6 @@ services:
     tty: true
     stdin_open: true
     working_dir: /front/vue-app
-    command: npm run dev
+    # command: npm run dev
 volumes:
   database:
